@@ -3,9 +3,9 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import CommentCard from "../components/CommentCard";
 import Link from "next/link";
+import LinkButton from "../components/LinkButton";
 
-export default function Home() {
-  console.log(props.comments);
+export default function Home({comments}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -19,11 +19,11 @@ export default function Home() {
           Welcome to My <a href="https://nextjs.org">Next.js! App</a>
         </h1>
         <section>
-          <div className="flex flex-wrap gap-8">
-            {props.comments?.map((data) => (
+          <div className="flex flex-wrap gap-9 mt-20 justify-center">
+            {comments.map((data) => (
               <div key={data.id}>
                 <CommentCard
-                  postID={data.postID}
+                  postID={data.postId}
                   id={data.id}
                   name={data.name}
                   email={data.email}
@@ -34,7 +34,7 @@ export default function Home() {
           </div>
         </section>
         <p className={styles.description}>Click below to see more comments</p>
-        
+        <LinkButton />
       </main>
 
       <footer className={styles.footer}>
@@ -53,10 +53,10 @@ export default function Home() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const response = await fetch('https://jsonplaceholder.typicode.com/post/1/comments')
   const comments = await response.json();
   return { 
-      props: { comments } 
+    props: { comments } 
   }
 }
